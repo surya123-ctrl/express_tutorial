@@ -1,7 +1,7 @@
 const express = require('express');
-const morgan = require('morgan');
+// const morgan = require('morgan');
 const server = express();
-const logger = require('morgan');
+// const logger = require('morgan');
 // const products = require('./data');
 // server.get('/', (req, res) => {
 //     res.send('<h1>Home Page</h1><a href="/api/phone">Phone</a>');
@@ -48,17 +48,45 @@ const logger = require('morgan');
 //     next();
 // }
 // server.use(logger);
-server.use(morgan('dev'));
-server.get('/', (req, res) => {
-    res.send('<h1>Home Page</h1><a href="/api/phone">Phone</a>');
-})
-server.get('/about', (req, res) => {
-    res.send('<h1>About</a>');
-})
-server.get('/contact', (req, res) => {
-    res.send('<h1>Contact</a>');
-})
+// server.use(morgan('dev'));
+// server.get('/', (req, res) => {
+//     res.send('<h1>Home Page</h1><a href="/api/phone">Phone</a>');
+// })
+// server.get('/about', (req, res) => {
+//     res.send('<h1>About</a>');
+// })
+// server.get('/contact', (req, res) => {
+//     res.send('<h1>Contact</a>');
+// })
 
+
+//Post on forms
+server.use(express.urlencoded({ extended: false }));
+let books = [
+    {
+        id: 1,
+        title: 'Book-1',
+        author: 'Author-1'
+    }, {
+        id: 2,
+        title: 'Book-2',
+        author: 'Author-2'
+    }
+]
+server.get('/books', (req, res) => {
+    res.json(books);
+})
+server.post('/books', (req, res) => {
+    const newBook = {
+        id: books.length + 1,
+        title: req.body.title,
+        author: req.body.author
+    }
+    books.push(newBook);
+    res.status(201).json(newBook);
+    console.log(req.body);
+})
+server.use(express.static('public'));
 server.listen(8080, () => {
     console.log("Server is running on port 8080");
 })
