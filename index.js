@@ -20,6 +20,21 @@ server.get('/', (req, res) => {
 
 //     res.json(singleProduct);
 // })
+
+//filtering content based on search and limit
+server.get('/api/v1/query', (req, res) => {
+    console.log(req.query);
+    let shortedProduct = [...products];
+    const { search, limit } = req.query;
+    if (search) {
+        shortedProduct = shortedProduct.filter(item => item.title.toLowerCase().includes(search.toLowerCase()))
+    }
+    if (limit) {
+        shortedProduct = shortedProduct.slice(0, Number(limit));
+    }
+    res.json(shortedProduct);
+    res.send("Hello");
+})
 server.listen(8080, () => {
     console.log("Server is running on port 8080");
 })
